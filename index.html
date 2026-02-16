@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chandan Kumar Panda — Audit Automation for CA Firms</title>
+<meta name="description" content="Excel crashes at 100k rows? I process 400k+ rows in 8 seconds. Python automation for GST reconciliation, audit data validation, and high-volume data processing. Built by a CA Finalist embedded in live operations.">
+<meta property="og:title" content="Audit Automation That Handles What Excel Can't">
+<meta property="og:description" content="400k+ rows in 8 seconds. GST reconciliation, audit data validation, and high-volume processing — built by a CA Finalist who sits through the same audits you do.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Chandan Kumar Panda — Audit Automation",
+  "description": "Python automation for CA firms: high-volume data processing, GST reconciliation, audit data validation",
+  "areaServed": "India",
+  "priceRange": "₹10,000 - ₹75,000"
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #0B1D3A;
+  --navy-light: #132B50;
+  --navy-mid: #1A3A6B;
+  --white: #FFFFFF;
+  --off-white: #F7F8FA;
+  --gray-100: #EEF0F4;
+  --gray-200: #D8DCE4;
+  --gray-400: #8A92A2;
+  --gray-600: #5A6275;
+  --green: #22C55E;
+  --green-dark: #16A34A;
+  --green-light: #DCFCE7;
+  --red-light: #FEE2E2;
+  --red: #EF4444;
+  --amber: #F59E0B;
+  --amber-light: #FEF3C7;
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Source Serif 4', Georgia, serif;
+}
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--navy);
+  background: var(--white);
+  line-height: 1.65;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6, nav, button, .label, .stat-num, .tag, .nav-link, .cta, table th, table td, .step-num, .form-el, .badge {
+  font-family: var(--font-display);
+}
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ─── NAV ─── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--gray-100);
+  transition: box-shadow 0.3s;
+}
+.nav.scrolled { box-shadow: 0 1px 12px rgba(11,29,58,0.08); }
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  max-width: 1120px; margin: 0 auto; padding: 0 24px;
+  height: 64px;
+}
+.nav-logo {
+  font-family: var(--font-display);
+  font-weight: 800; font-size: 18px;
+  color: var(--navy);
+  text-decoration: none;
+  letter-spacing: -0.3px;
+}
+.nav-logo span { color: var(--green); }
+.nav-links { display: flex; gap: 32px; align-items: center; }
+.nav-link {
+  font-size: 14px; font-weight: 500; color: var(--gray-600);
+  text-decoration: none; transition: color 0.2s;
+  letter-spacing: 0.01em;
+}
+.nav-link:hover { color: var(--navy); }
+.nav-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 20px; border-radius: 8px;
+  background: var(--green); color: white;
+  font-size: 14px; font-weight: 600;
+  text-decoration: none; transition: all 0.2s;
+  border: none; cursor: pointer;
+}
+.nav-cta:hover { background: var(--green-dark); transform: translateY(-1px); }
+.nav-cta svg { width: 16px; height: 16px; }
+
+.mobile-toggle {
+  display: none; background: none; border: none; cursor: pointer;
+  width: 40px; height: 40px; align-items: center; justify-content: center;
+}
+.mobile-toggle span {
+  display: block; width: 22px; height: 2px; background: var(--navy);
+  transition: all 0.3s; position: relative;
+}
+.mobile-toggle span::before, .mobile-toggle span::after {
+  content: ''; position: absolute; width: 22px; height: 2px;
+  background: var(--navy); transition: all 0.3s; left: 0;
+}
+.mobile-toggle span::before { top: -7px; }
+.mobile-toggle span::after { top: 7px; }
+.mobile-toggle.active span { background: transparent; }
+.mobile-toggle.active span::before { top: 0; transform: rotate(45deg); }
+.mobile-toggle.active span::after { top: 0; transform: rotate(-45deg); }
+
+.mobile-menu {
+  display: none;
+  position: fixed; top: 64px; left: 0; right: 0;
+  background: white; border-bottom: 1px solid var(--gray-100);
+  padding: 16px 24px; z-index: 99;
+  box-shadow: 0 8px 24px rgba(11,29,58,0.08);
+}
+.mobile-menu.active { display: flex; flex-direction: column; gap: 8px; }
+.mobile-menu .nav-link {
+  display: block; padding: 12px 0; font-size: 16px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.mobile-menu .nav-cta { justify-content: center; margin-top: 8px; }
+
+@media (max-width: 768px) {
+  .nav-links { display: none; }
+  .mobile-toggle { display: flex; }
+}
+
+/* ─── HERO ─── */
+.hero {
+  padding: 140px 0 80px;
+  background: var(--white);
+  position: relative;
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gray-200), transparent);
+}
+.hero-content {
+  max-width: 720px;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--green-light); color: var(--green-dark);
+  padding: 6px 14px; border-radius: 100px;
+  font-size: 13px; font-weight: 600;
+  margin-bottom: 28px;
+  letter-spacing: 0.02em;
+}
+.hero-badge::before {
+  content: '';
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--green);
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.hero h1 {
+  font-size: clamp(36px, 5.5vw, 56px);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--navy);
+  margin-bottom: 24px;
+}
+.hero h1 em {
+  font-style: normal;
+  color: var(--green-dark);
+  position: relative;
+}
+.hero-sub {
+  font-size: 19px;
+  color: var(--gray-600);
+  line-height: 1.65;
+  margin-bottom: 40px;
+  max-width: 580px;
+}
+.hero-ctas {
+  display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+  margin-bottom: 56px;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 16px 28px; border-radius: 10px;
+  background: var(--green); color: white;
+  font-family: var(--font-display);
+  font-size: 16px; font-weight: 700;
+  text-decoration: none; transition: all 0.25s;
+  border: none; cursor: pointer;
+  box-shadow: 0 2px 12px rgba(34,197,94,0.25);
+}
+.btn-primary:hover {
+  background: var(--green-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(34,197,94,0.3);
+}
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 16px 28px; border-radius: 10px;
+  background: var(--off-white); color: var(--navy);
+  font-family: var(--font-display);
+  font-size: 16px; font-weight: 600;
+  text-decoration: none; transition: all 0.2s;
+  border: 1px solid var(--gray-200);
+}
+.btn-secondary:hover {
+  background: var(--gray-100);
+  border-color: var(--gray-400);
+}
+
+/* Hero Stats */
+.hero-stats {
+  display: flex; gap: 48px; flex-wrap: wrap;
+}
+.hero-stat {}
+.stat-num {
+  font-size: 32px; font-weight: 800;
+  color: var(--navy); letter-spacing: -0.03em;
+  line-height: 1;
+}
+.stat-num span { color: var(--green); }
+.stat-label {
+  font-family: var(--font-display);
+  font-size: 13px; color: var(--gray-400);
+  margin-top: 6px; font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 768px) {
+  .hero { padding: 110px 0 60px; }
+  .hero-stats { gap: 32px; }
+  .stat-num { font-size: 26px; }
+}
+
+/* ─── SECTION COMMON ─── */
+section { padding: 80px 0; }
+.section-label {
+  font-family: var(--font-display);
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--green-dark);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: var(--navy);
+  margin-bottom: 16px;
+}
+.section-subtitle {
+  font-size: 17px;
+  color: var(--gray-600);
+  max-width: 560px;
+  line-height: 1.65;
+}
+
+/* ─── PROOF SECTION (Before/After) ─── */
+.proof { background: var(--off-white); }
+.proof-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 48px;
+}
+.proof-card {
+  border-radius: 16px;
+  padding: 36px;
+  position: relative;
+  overflow: hidden;
+}
+.proof-card.before {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+}
+.proof-card.after {
+  background: var(--navy);
+  color: white;
+  border: 1px solid var(--navy);
+}
+.proof-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; margin-bottom: 24px; padding: 5px 12px;
+  border-radius: 6px;
+}
+.before .proof-tag { background: var(--red-light); color: var(--red); }
+.after .proof-tag { background: rgba(34,197,94,0.15); color: var(--green); }
+
+.proof-metric {
+  margin-bottom: 20px;
+}
+.proof-metric-val {
+  font-family: var(--font-display);
+  font-size: 48px; font-weight: 800;
+  line-height: 1; letter-spacing: -0.03em;
+}
+.before .proof-metric-val { color: var(--red); }
+.after .proof-metric-val { color: var(--green); }
+.proof-metric-label {
+  font-family: var(--font-display);
+  font-size: 14px; font-weight: 500;
+  margin-top: 6px;
+}
+.before .proof-metric-label { color: var(--gray-400); }
+.after .proof-metric-label { color: rgba(255,255,255,0.6); }
+
+.proof-items { list-style: none; }
+.proof-items li {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 0;
+  font-size: 15px;
+  line-height: 1.5;
+}
+.before .proof-items li { color: var(--gray-600); border-bottom: 1px solid var(--gray-100); }
+.after .proof-items li { color: rgba(255,255,255,0.85); border-bottom: 1px solid rgba(255,255,255,0.08); }
+.proof-items li:last-child { border: none; }
+.proof-icon {
+  flex-shrink: 0; width: 20px; height: 20px;
+  margin-top: 2px; display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+}
+
+/* Proof bottom stat bar */
+.proof-bottom {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 24px; margin-top: 48px;
+  padding: 32px; border-radius: 16px;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+}
+.proof-bottom-stat { text-align: center; }
+.proof-bottom-stat .stat-num { font-size: 36px; }
+.proof-bottom-stat .stat-label { margin-top: 4px; }
+
+@media (max-width: 768px) {
+  .proof-grid { grid-template-columns: 1fr; }
+  .proof-bottom { grid-template-columns: 1fr; gap: 20px; padding: 24px; }
+  .proof-metric-val { font-size: 36px; }
+}
+
+/* ─── SERVICES ─── */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+.service-card {
+  padding: 32px;
+  border-radius: 14px;
+  border: 1px solid var(--gray-200);
+  background: var(--white);
+  transition: all 0.3s;
+}
+.service-card:hover {
+  border-color: var(--green);
+  box-shadow: 0 4px 24px rgba(34,197,94,0.08);
+  transform: translateY(-2px);
+}
+.service-icon {
+  width: 48px; height: 48px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 20px;
+}
+.service-card:nth-child(1) .service-icon { background: #EEF2FF; }
+.service-card:nth-child(2) .service-icon { background: #FEF3C7; }
+.service-card:nth-child(3) .service-icon { background: var(--green-light); }
+.service-card:nth-child(4) .service-icon { background: #F0E6FF; }
+.service-card h3 {
+  font-family: var(--font-display);
+  font-size: 18px; font-weight: 700;
+  margin-bottom: 10px; letter-spacing: -0.01em;
+}
+.service-card p {
+  font-size: 15px; color: var(--gray-600); line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .services-grid { grid-template-columns: 1fr; }
+}
+
+/* ─── COMPARISON ─── */
+.comparison { background: var(--off-white); }
+.comparison-table-wrap {
+  margin-top: 48px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--gray-200);
+  background: var(--white);
+  overflow-x: auto;
+}
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  min-width: 640px;
+}
+.comparison-table thead { background: var(--navy); color: white; }
+.comparison-table th {
+  padding: 18px 20px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+}
+.comparison-table th:last-child {
+  background: var(--green-dark);
+  position: relative;
+}
+.comparison-table td {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--gray-100);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--gray-600);
+}
+.comparison-table tr:last-child td { border-bottom: none; }
+.comparison-table td:first-child {
+  font-weight: 600;
+  color: var(--navy);
+}
+.comparison-table td:last-child {
+  color: var(--navy);
+  font-weight: 700;
+  background: rgba(34,197,94,0.04);
+}
+.check { color: var(--green); font-weight: 700; }
+.cross { color: var(--red); }
+.neutral { color: var(--amber); }
+
+/* ─── PROCESS ─── */
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+  position: relative;
+}
+.process-steps::before {
+  content: '';
+  position: absolute;
+  top: 36px; left: 48px; right: 48px;
+  height: 2px;
+  background: var(--gray-200);
+  z-index: 0;
+}
+.process-step {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.step-num {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--gray-200);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px; font-weight: 800;
+  color: var(--navy);
+  margin: 0 auto 20px;
+  transition: all 0.3s;
+}
+.process-step:hover .step-num {
+  border-color: var(--green);
+  color: var(--green);
+  box-shadow: 0 4px 16px rgba(34,197,94,0.15);
+}
+.process-step h4 {
+  font-family: var(--font-display);
+  font-size: 16px; font-weight: 700;
+  margin-bottom: 8px;
+}
+.process-step p {
+  font-size: 14px; color: var(--gray-400);
+  max-width: 200px; margin: 0 auto;
+  font-family: var(--font-display);
+  line-height: 1.5;
+}
+.step-tag {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 4px 10px; border-radius: 100px;
+  margin-top: 12px;
+}
+.step-free { background: var(--green-light); color: var(--green-dark); }
+.step-week { background: var(--gray-100); color: var(--gray-400); }
+
+@media (max-width: 768px) {
+  .process-steps {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 20px;
+  }
+  .process-steps::before { display: none; }
+}
+@media (max-width: 480px) {
+  .process-steps { grid-template-columns: 1fr; }
+}
+
+/* ─── SHARE ─── */
+.share { background: var(--navy); color: white; }
+.share .section-label { color: var(--green); }
+.share .section-title { color: white; }
+.share .section-subtitle { color: rgba(255,255,255,0.6); }
+
+.share-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 48px;
+}
+.share-card {
+  padding: 32px;
+  border-radius: 14px;
+  background: var(--navy-light);
+  border: 1px solid rgba(255,255,255,0.06);
+  transition: all 0.3s;
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  display: block;
+}
+.share-card:hover {
+  border-color: var(--green);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+}
+.share-card-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: rgba(34,197,94,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.share-card h3 {
+  font-family: var(--font-display);
+  font-size: 16px; font-weight: 700;
+  margin-bottom: 8px;
+}
+.share-card p {
+  font-size: 14px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.55;
+  font-family: var(--font-display);
+}
+.share-card .download-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin-top: 16px;
+  font-family: var(--font-display);
+  font-size: 13px; font-weight: 600;
+  color: var(--green);
+}
+
+@media (max-width: 768px) {
+  .share-cards { grid-template-columns: 1fr; }
+}
+
+/* ─── CONTACT ─── */
+.contact { background: var(--white); }
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  margin-top: 48px;
+}
+.contact-left {}
+.risk-items {
+  list-style: none;
+  margin-top: 32px;
+}
+.risk-items li {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 0;
+  font-size: 16px;
+  border-bottom: 1px solid var(--gray-100);
+}
+.risk-items li:last-child { border: none; }
+.risk-check {
+  flex-shrink: 0;
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  background: var(--green-light);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--green-dark);
+  font-size: 14px;
+  font-weight: 700;
+  margin-top: 2px;
+}
+
+.availability-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 18px; border-radius: 10px;
+  background: var(--amber-light);
+  margin-top: 28px;
+  font-family: var(--font-display);
+  font-size: 14px; font-weight: 600;
+  color: #92400E;
+}
+
+.contact-form {
+  background: var(--off-white);
+  padding: 36px;
+  border-radius: 16px;
+  border: 1px solid var(--gray-200);
+}
+.form-title {
+  font-family: var(--font-display);
+  font-size: 20px; font-weight: 700;
+  margin-bottom: 24px;
+}
+.form-group { margin-bottom: 18px; }
+.form-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 13px; font-weight: 600;
+  color: var(--gray-600);
+  margin-bottom: 6px;
+}
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--gray-200);
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  background: var(--white);
+  color: var(--navy);
+  transition: border-color 0.2s;
+  outline: none;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.1);
+}
+.form-textarea { resize: vertical; min-height: 80px; }
+.form-input::placeholder, .form-textarea::placeholder {
+  color: var(--gray-400);
+}
+.form-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+}
+.form-submit {
+  width: 100%;
+  padding: 16px;
+  border-radius: 10px;
+  background: var(--green); color: white;
+  font-family: var(--font-display);
+  font-size: 16px; font-weight: 700;
+  border: none; cursor: pointer;
+  transition: all 0.25s;
+  margin-top: 8px;
+}
+.form-submit:hover {
+  background: var(--green-dark);
+  transform: translateY(-1px);
+}
+.form-note {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 12px; color: var(--gray-400);
+  margin-top: 12px;
+}
+
+@media (max-width: 768px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+  .form-row { grid-template-columns: 1fr; }
+}
+
+/* ─── FOOTER ─── */
+.footer {
+  background: var(--navy);
+  color: rgba(255,255,255,0.4);
+  padding: 40px 0;
+  font-family: var(--font-display);
+  font-size: 13px;
+  text-align: center;
+}
+.footer-links {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  margin-bottom: 16px;
+}
+.footer-links a {
+  color: var(--green);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: color 0.2s;
+}
+.footer-links a:hover { color: #34D399; }
+.footer-links svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+/* ─── WHATSAPP FAB ─── */
+.wa-fab {
+  position: fixed; bottom: 24px; right: 24px;
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: #25D366;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(37,211,102,0.35);
+  z-index: 90;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+.wa-fab:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 24px rgba(37,211,102,0.45);
+}
+.wa-fab svg { width: 30px; height: 30px; fill: white; }
+
+/* ─── ANIMATIONS ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── FORM SUCCESS ─── */
+.form-success {
+  display: none;
+  text-align: center;
+  padding: 40px 20px;
+}
+.form-success.active { display: block; }
+.form-success-icon {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: var(--green-light);
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 20px;
+  font-size: 28px;
+}
+.form-success h3 {
+  font-family: var(--font-display);
+  font-size: 20px; font-weight: 700;
+  margin-bottom: 8px;
+}
+.form-success p {
+  font-size: 15px; color: var(--gray-600);
+}
+</style>
+</head>
+
+<body>
+<!-- ─── NAVIGATION ─── -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">CKP<span>.</span></a>
+    <div class="nav-links">
+      <a href="#proof" class="nav-link">Proof</a>
+      <a href="#services" class="nav-link">Services</a>
+      <a href="#compare" class="nav-link">Why Me</a>
+      <a href="#process" class="nav-link">Process</a>
+      <a href="#contact" class="nav-cta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.79 19.79 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        Free Consultation
+      </a>
+    </div>
+    <button class="mobile-toggle" aria-label="Toggle menu">
+      <span></span>
+    </button>
+  </div>
+</nav>
+<div class="mobile-menu">
+  <a href="#proof" class="nav-link">Proof</a>
+  <a href="#services" class="nav-link">Services</a>
+  <a href="#compare" class="nav-link">Why Me</a>
+  <a href="#process" class="nav-link">Process</a>
+  <a href="#contact" class="nav-cta">Free Consultation</a>
+</div>
+
+<!-- ─── HERO ─── -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-badge badge">Taking on new clients</div>
+      <h1>Your Excel crashes at 100k rows.<br>I process <em>400k+ in 8 seconds.</em></h1>
+      <p class="hero-sub">Python-powered audit automation built by a CA Finalist embedded in live operations. I solve the data problems that Excel, VBA, and Tally can't handle.</p>
+      <div class="hero-ctas">
+        <a href="#contact" class="btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          Start With a Free Proof of Concept
+        </a>
+        <a href="#proof" class="btn-secondary">See the proof ↓</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="stat-num">400k<span>+</span></div>
+          <div class="stat-label">Rows Processed per Run</div>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-num">8<span>s</span></div>
+          <div class="stat-label">vs 2 Hours in Excel</div>
+        </div>
+        <div class="hero-stat">
+          <div class="stat-num">98<span>%</span></div>
+          <div class="stat-label">Matching Accuracy</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROOF: Before/After ─── -->
+<section class="proof" id="proof">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">The Difference</div>
+      <div class="section-title">You know how Excel freezes at 100k rows?</div>
+      <div class="section-subtitle">You know how GSTR reconciliation eats up 3 days every month. You know how partners ask for audit trails you can't easily produce. Here's what changes.</div>
+    </div>
+    <div class="proof-grid reveal">
+      <div class="proof-card before">
+        <div class="proof-tag">❌ Without Automation</div>
+        <div class="proof-metric">
+          <div class="proof-metric-val">2+ hrs</div>
+          <div class="proof-metric-label">Just to open the file</div>
+        </div>
+        <ul class="proof-items">
+          <li><span class="proof-icon">😤</span> Excel crashes or freezes above 100k rows</li>
+          <li><span class="proof-icon">🐌</span> 3+ days for GST reconciliation per client</li>
+          <li><span class="proof-icon">🔍</span> Manual VLOOKUP — misses and duplicates slip through</li>
+          <li><span class="proof-icon">📊</span> Partner asks for audit trail — you rebuild from scratch</li>
+          <li><span class="proof-icon">😰</span> Article assistants wasting hours on copy-paste</li>
+        </ul>
+      </div>
+      <div class="proof-card after">
+        <div class="proof-tag">✓ With Automation</div>
+        <div class="proof-metric">
+          <div class="proof-metric-val">8 sec</div>
+          <div class="proof-metric-label">Same dataset, fully processed</div>
+        </div>
+        <ul class="proof-items">
+          <li><span class="proof-icon">⚡</span> 400k+ rows load instantly via Parquet engine</li>
+          <li><span class="proof-icon">🎯</span> GST reconciliation done in minutes, not days</li>
+          <li><span class="proof-icon">✅</span> 98% auto-matching — only exceptions need review</li>
+          <li><span class="proof-icon">📋</span> Audit trail generated automatically with every run</li>
+          <li><span class="proof-icon">🔒</span> Data stays on your machine — nothing goes to cloud</li>
+        </ul>
+      </div>
+    </div>
+    <div class="proof-bottom reveal">
+      <div class="proof-bottom-stat">
+        <div class="stat-num">50k<span>+</span></div>
+        <div class="stat-label">Invoices per Run</div>
+      </div>
+      <div class="proof-bottom-stat">
+        <div class="stat-num">90<span>%</span></div>
+        <div class="stat-label">Time Saved</div>
+      </div>
+      <div class="proof-bottom-stat">
+        <div class="stat-num">100<span>%</span></div>
+        <div class="stat-label">Local Processing (No Cloud)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICES ─── -->
+<section class="services" id="services">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">What I Build</div>
+      <div class="section-title">Automation that understands audit workflows</div>
+      <div class="section-subtitle">Not generic scripts. Tools built by someone who sits through the same audits you do.</div>
+    </div>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="service-icon">📦</div>
+        <h3>High-Volume Data Processing</h3>
+        <p>Parquet-based engine for datasets that crash Excel. 100k+ rows processed in seconds with real-time validation and error flagging.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🔄</div>
+        <h3>GST Reconciliation</h3>
+        <p>GSTR-2A vs Books matching. Invoice validation, discrepancy detection, and automated vendor compliance checks — 50k+ invoices per run.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">✅</div>
+        <h3>Audit Data Validation</h3>
+        <p>Master data integrity checks, duplicate and anomaly detection, cross-system reconciliation. Catches what manual review misses.</p>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📑</div>
+        <h3>Financial Controls Automation</h3>
+        <p>Process flow digitisation, audit trail generation, and compliance documentation — all automated, all traceable.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── COMPARISON TABLE ─── -->
+<section class="comparison" id="compare">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Why Choose Me</div>
+      <div class="section-title">Not a consulting firm. Not a random developer.</div>
+      <div class="section-subtitle">An embedded specialist who understands both the code and the compliance.</div>
+    </div>
+    <div class="comparison-table-wrap reveal">
+      <table class="comparison-table">
+        <thead>
+          <tr>
+            <th>Factor</th>
+            <th>Consulting Firms</th>
+            <th>Freelance Developers</th>
+            <th>Embedded Specialist (Me)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Cost</td>
+            <td>₹2L+ per project</td>
+            <td>₹50k–80k</td>
+            <td>₹15k–40k</td>
+          </tr>
+          <tr>
+            <td>Audit Knowledge</td>
+            <td>Generic / theoretical</td>
+            <td><span class="cross">None</span></td>
+            <td><span class="check">Live field experience</span></td>
+          </tr>
+          <tr>
+            <td>Turnaround</td>
+            <td>4–6 weeks</td>
+            <td>2–3 weeks</td>
+            <td><span class="check">1–2 weeks</span></td>
+          </tr>
+          <tr>
+            <td>Data Security</td>
+            <td>Cloud-based</td>
+            <td>Varies</td>
+            <td><span class="check">Local-only processing</span></td>
+          </tr>
+          <tr>
+            <td>Customisation</td>
+            <td>Template-driven</td>
+            <td>Custom, no audit context</td>
+            <td><span class="check">Custom + audit context</span></td>
+          </tr>
+          <tr>
+            <td>Post-Delivery Support</td>
+            <td>Billable hours</td>
+            <td>Limited</td>
+            <td><span class="check">Included</span></td>
+          </tr>
+          <tr>
+            <td>Understands SA 500?</td>
+            <td>Yes</td>
+            <td><span class="cross">No</span></td>
+            <td><span class="check">Yes — from the field</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ─── PROCESS ─── -->
+<section class="process" id="process">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">How We Work</div>
+      <div class="section-title">From first call to working automation</div>
+      <div class="section-subtitle">A structured, transparent process so you know exactly what you're getting.</div>
+    </div>
+    <div class="process-steps reveal">
+      <div class="process-step">
+        <div class="step-num">1</div>
+        <h4>Discovery & NDA</h4>
+        <p>Free 30-min call. We define the scope and sign an NDA first.</p>
+        <span class="step-tag step-free">Free</span>
+      </div>
+      <div class="process-step">
+        <div class="step-num">2</div>
+        <h4>Proof of Concept</h4>
+        <p>I run a pilot on your data. You see results before committing.</p>
+        <span class="step-tag step-free">Free</span>
+      </div>
+      <div class="process-step">
+        <div class="step-num">3</div>
+        <h4>Build & Deliver</h4>
+        <p>Full script development, testing, documentation, and training.</p>
+        <span class="step-tag step-week">1–2 weeks</span>
+      </div>
+      <div class="process-step">
+        <div class="step-num">4</div>
+        <h4>Handover & Support</h4>
+        <p>You own the code. I provide support until your team is comfortable.</p>
+        <span class="step-tag step-week">Ongoing</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SHARE WITH TEAM ─── -->
+<section class="share" id="share">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Share With Your Team</div>
+      <div class="section-title">Need to convince your Partner or Manager?</div>
+      <div class="section-subtitle">Download these briefs — built to be forwarded to decision-makers via WhatsApp or email.</div>
+    </div>
+    <div class="share-cards reveal">
+      <a class="share-card" id="download-tech">
+        <div class="share-card-icon">📊</div>
+        <h3>The Parquet Advantage</h3>
+        <p>1-page technical brief. Excel vs Parquet comparison, ROI summary, and why this matters for audits.</p>
+        <div class="download-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Download PDF
+        </div>
+      </a>
+      <a class="share-card" id="download-security">
+        <div class="share-card-icon">🔒</div>
+        <h3>Data Security & Compliance</h3>
+        <p>How I handle confidential data. NDA terms, local-only processing, and audit trail documentation.</p>
+        <div class="download-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Download PDF
+        </div>
+      </a>
+      <a class="share-card" id="download-proposal">
+        <div class="share-card-icon">📋</div>
+        <h3>Sample Engagement Proposal</h3>
+        <p>What a typical project looks like. Deliverables, timeline, and pricing framework.</p>
+        <div class="download-tag">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Download PDF
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ─── -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label">Get Started</div>
+      <div class="section-title">Start with a free proof of concept</div>
+      <div class="section-subtitle">Send me your challenge — I'll tell you if I can solve it and how long it'll take. No payment, no obligation.</div>
+    </div>
+    <div class="contact-grid reveal">
+      <div class="contact-left">
+        <ul class="risk-items">
+          <li>
+            <span class="risk-check">✓</span>
+            <div>
+              <strong>Free proof of concept on your data</strong><br>
+              <span style="color:var(--gray-400); font-size:14px;">See it work before you pay a single rupee</span>
+            </div>
+          </li>
+          <li>
+            <span class="risk-check">✓</span>
+            <div>
+              <strong>No upfront payment required</strong><br>
+              <span style="color:var(--gray-400); font-size:14px;">Pay only after the POC proves value</span>
+            </div>
+          </li>
+          <li>
+            <span class="risk-check">✓</span>
+            <div>
+              <strong>You keep the script — always</strong><br>
+              <span style="color:var(--gray-400); font-size:14px;">Full code ownership, no lock-in</span>
+            </div>
+          </li>
+          <li>
+            <span class="risk-check">✓</span>
+            <div>
+              <strong>100% money-back guarantee</strong><br>
+              <span style="color:var(--gray-400); font-size:14px;">If the script doesn't work as promised</span>
+            </div>
+          </li>
+          <li>
+            <span class="risk-check">✓</span>
+            <div>
+              <strong>NDA signed before any data exchange</strong><br>
+              <span style="color:var(--gray-400); font-size:14px;">Your client data stays confidential</span>
+            </div>
+          </li>
+        </ul>
+        <div class="availability-badge">
+          ⏰ Currently available — taking on 2 new projects this month
+        </div>
+      </div>
+      <div class="contact-right">
+        <div class="contact-form" id="contact-form-wrap">
+          <div class="form-title">Start with a quick question</div>
+          <form id="contact-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="name">Your Name</label>
+                <input class="form-input form-el" type="text" id="name" placeholder="e.g., CA Rajesh Kumar" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="role">Your Role</label>
+                <select class="form-select form-el" id="role">
+                  <option value="">Select role...</option>
+                  <option>Managing Partner</option>
+                  <option>Audit Manager</option>
+                  <option>Senior Associate / CA</option>
+                  <option>Article Assistant</option>
+                  <option>CFO / Finance Head</option>
+                  <option>Other</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="challenge">Your Current Challenge</label>
+              <textarea class="form-textarea form-el" id="challenge" placeholder="e.g., Excel crashes when reconciling GSTR-2A with 50k+ invoices..."></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="whatsapp">WhatsApp Number</label>
+                <input class="form-input form-el" type="tel" id="whatsapp" placeholder="+91 89175 64142" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="prefer">Preferred Contact</label>
+                <select class="form-select form-el" id="prefer">
+                  <option>WhatsApp</option>
+                  <option>Phone Call</option>
+                  <option>Email</option>
+                </select>
+              </div>
+            </div>
+            <button class="form-submit form-el" type="submit">Send — I'll Respond Within 4 Hours</button>
+            <div class="form-note">Or WhatsApp me directly: <a href="https://wa.me/918917564142?text=Hi%20Chandan%2C%20I%20found%20your%20website%20and%20want%20to%20discuss%20audit%20automation." style="color:var(--green-dark); font-weight:600;">+91 89175 64142</a></div>
+          </form>
+          <div class="form-success" id="form-success">
+            <div class="form-success-icon">✓</div>
+            <h3>Message Sent!</h3>
+            <p>I'll get back to you within 4 hours via WhatsApp.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/chandan090903" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://github.com/chandanpanda615-lab" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="https://wa.me/918917564142?text=Hi%20Chandan%2C%20I%20want%20to%20discuss%20audit%20automation." target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+    <p>Chandan Kumar Panda · CA Finalist · Embedded Audit Automation Specialist</p>
+    <p style="margin-top:6px;">Python · Pandas · PyArrow · Parquet — Built for data that Excel can't handle</p>
+    <p style="margin-top:12px; font-size:12px; opacity:0.6;">© 2025 Chandan Kumar Panda. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ─── WHATSAPP FAB ─── -->
+<a class="wa-fab" href="https://wa.me/918917564142?text=Hi%20Chandan%2C%20I%20visited%20your%20website%20and%20want%20to%20discuss%20audit%20automation." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+  <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+
+<script>
+// ─── Mobile Menu ───
+const toggle = document.querySelector('.mobile-toggle');
+const mobileMenu = document.querySelector('.mobile-menu');
+toggle.addEventListener('click', () => {
+  toggle.classList.toggle('active');
+  mobileMenu.classList.toggle('active');
+});
+document.querySelectorAll('.mobile-menu .nav-link, .mobile-menu .nav-cta').forEach(link => {
+  link.addEventListener('click', () => {
+    toggle.classList.remove('active');
+    mobileMenu.classList.remove('active');
+  });
+});
+
+// ─── Nav scroll effect ───
+window.addEventListener('scroll', () => {
+  document.querySelector('.nav').classList.toggle('scrolled', window.scrollY > 10);
+});
+
+// ─── Scroll reveal ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ─── Form submission ───
+document.getElementById('contact-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  // In production, wire this to Formspree, EmailJS, or backend
+  const formData = {
+    name: document.getElementById('name').value,
+    role: document.getElementById('role').value,
+    challenge: document.getElementById('challenge').value,
+    whatsapp: document.getElementById('whatsapp').value,
+    prefer: document.getElementById('prefer').value
+  };
+  console.log('Lead captured:', formData);
+  
+  this.style.display = 'none';
+  document.getElementById('form-success').classList.add('active');
+  
+  setTimeout(() => {
+    this.style.display = 'block';
+    this.reset();
+    document.getElementById('form-success').classList.remove('active');
+  }, 5000);
+});
+
+// ─── PDF Download placeholders ───
+document.getElementById('download-tech').addEventListener('click', () => {
+  alert('📊 The Parquet Advantage PDF will be available for download once your site goes live. (Replace this with actual PDF link)');
+});
+document.getElementById('download-security').addEventListener('click', () => {
+  alert('🔒 Data Security & Compliance PDF will be available for download once your site goes live. (Replace this with actual PDF link)');
+});
+document.getElementById('download-proposal').addEventListener('click', () => {
+  alert('📋 Sample Engagement Proposal PDF will be available for download once your site goes live. (Replace this with actual PDF link)');
+});
+</script>
+</body>
+</html>
